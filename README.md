@@ -1,6 +1,8 @@
 # Attack time detection for recorded sounds
 
-This project is a simple implementation of a sound attack time detection algorithm. The algorithm. The algorithm is implemented in Python and uses the librosa library for audio processing.
+This project is a simple implementation of a sound attack time detection algorithm. 
+
+The algorithm is implemented in Python and uses the librosa library for audio processing.
 
 ## Installation
 Clone the repository and install the required libraries using pip:
