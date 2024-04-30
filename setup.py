@@ -6,7 +6,7 @@ setup(
     author="Alberto Acquilino",
     author_email='alberto.acquilino@mail.mcgill.ca',
     description='Attack time detection for monophonic music sounds',
-    packages=['attack_time'],
+    # packages=['attack_time'],
     install_requires=[
         'numpy',
         'pandas',
