@@ -36,3 +36,21 @@ attack_start, attack_end = attack_time_from_array(y, sr)
 print(f'Attack start: {attack_start}ms, Attack end: {attack_end}ms, duration: {attack_end - attack_start}ms')
 
 ```
+
+## Hyperparameters
+The algorithm uses the following hyperparameters that can be overridden as kwargs:
+- **ATTACK_START_ENERGY** : float
+        The energy threshold to consider the start of the attack
+        default: 0.3
+- **NUMBER_OF_PEAKS** : int
+        The number of peaks to consider for the attack
+        default: 5
+- **ATTACK_PEAKS_ENERGY** : float
+        The energy threshold to consider the attack peaks
+        default: 0.5
+- **ROLLING_WINDOW** : int
+        The window size for the rolling minimum used to filter the peaks
+        default: 30
+- **SPECTROGRAM_SAMPLE_TIME_MS** : int
+        The time in milliseconds to consider for the spectrogram
+        default: 1

@@ -15,7 +15,7 @@ class AttackClarityError(Exception):
     pass
 
 
-def attack_time_from_file(path: str) -> tuple[float, float]:
+def attack_time_from_file(path: str, **kwargs) -> tuple[float, float]:
     """
     Find the attack time of a played note from a file.
 
@@ -23,6 +23,23 @@ def attack_time_from_file(path: str) -> tuple[float, float]:
     ----------
     path : str
         The path to the file
+    ----------
+    Keyword Arguments:
+    ATTACK_START_ENERGY : float
+        The energy threshold to consider the start of the attack
+        default: 0.3
+    NUMBER_OF_PEAKS : int
+        The number of peaks to consider for the attack
+        default: 5
+    ATTACK_PEAKS_ENERGY : float
+        The energy threshold to consider the attack peaks
+        default: 0.5
+    ROLLING_WINDOW : int
+        The window size for the rolling minimum used to filter the peaks
+        default: 30
+    SPECTROGRAM_SAMPLE_TIME_MS : int
+        The time in milliseconds to consider for the spectrogram
+        default: 1
 
     Returns
     -------
@@ -30,12 +47,13 @@ def attack_time_from_file(path: str) -> tuple[float, float]:
         The start and end time of the attack in milliseconds
     """
     sound_raw, sample_rate = librosa.load(path, sr=44100)
-    return attack_time_from_array(sound_raw, sample_rate)
+    return attack_time_from_array(sound_raw, sample_rate, **kwargs)
 
 
 def attack_time_from_array(
         sound: np.ndarray,
-        sample_rate: int
+        sample_rate: int,
+        **kwargs
 ) -> tuple[float, float]:
     """
     Find the attack time of a played note.
@@ -46,12 +64,37 @@ def attack_time_from_array(
         The sound to analyze
     sample_rate : int
         The sample rate of the sound
-
+    ----------
+    Keyword Arguments:
+    ATTACK_START_ENERGY : float
+        The energy threshold to consider the start of the attack
+        default: 0.3
+    NUMBER_OF_PEAKS : int
+        The number of peaks to consider for the attack
+        default: 5
+    ATTACK_PEAKS_ENERGY : float
+        The energy threshold to consider the attack peaks
+        default: 0.5
+    ROLLING_WINDOW : int
+        The window size for the rolling minimum used to filter the peaks
+        default: 30
+    SPECTROGRAM_SAMPLE_TIME_MS : int
+        The time in milliseconds to consider for the spectrogram
+        default: 1
     Returns
     -------
     tuple[float, float]
         The start and end time of the attack in milliseconds
     """
+    ATTACK_START_ENERGY = kwargs.get(
+        'ATTACK_START_ENERGY', ATTACK_START_ENERGY)
+    NUMBER_OF_PEAKS = kwargs.get('NUMBER_OF_PEAKS', NUMBER_OF_PEAKS)
+    ATTACK_PEAKS_ENERGY = kwargs.get(
+        'ATTACK_PEAKS_ENERGY', ATTACK_PEAKS_ENERGY)
+    ROLLING_WINDOW = kwargs.get('ROLLING_WINDOW', ROLLING_WINDOW)
+    SPECTROGRAM_SAMPLE_TIME_MS = kwargs.get(
+        'SPECTROGRAM_SAMPLE_TIME_MS', SPECTROGRAM_SAMPLE_TIME_MS)
+
     hop_length = sample_rate * SPECTROGRAM_SAMPLE_TIME_MS // 1000
     # attack_max_idx = attack_max_ms // spectogram_sample_rate_ms
 
